@@ -9,6 +9,7 @@ interface QuestionCardProps {
   currentIndex: number;
   totalQuestions: number;
   onSelect: (choiceId: string) => void;
+  onBack: () => void;
   isVisible: boolean;
 }
 
@@ -47,6 +48,7 @@ export default function QuestionCard({
   currentIndex,
   totalQuestions,
   onSelect,
+  onBack,
   isVisible,
 }: QuestionCardProps) {
   return (
@@ -61,6 +63,20 @@ export default function QuestionCard({
           className="w-full max-w-2xl mx-auto relative"
         >
         <ManaParticles count={15} />
+
+        {/* ====== 戻るボタン ====== */}
+        {currentIndex > 0 && (
+          <motion.button
+            onClick={onBack}
+            className="mb-4 flex items-center gap-2 text-amber-500/60 hover:text-amber-400 
+                       text-xs tracking-widest transition-colors cursor-pointer"
+            initial={{ opacity: 0, x: -10 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.15 }}
+          >
+            ◂ 前の選択に戻る
+          </motion.button>
+        )}
 
         {/* ====== チャプター表示 ====== */}
         <motion.div

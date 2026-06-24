@@ -78,6 +78,12 @@ export default function Home() {
     setCurrentQuestion(nextQuestionIndex);
   }, [nextQuestionIndex]);
 
+  const handleBack = useCallback(() => {
+    if (currentQuestion > 0) {
+      setCurrentQuestion((prev) => prev - 1);
+    }
+  }, [currentQuestion]);
+
   const handleRestart = useCallback(() => {
     setPhase("intro");
     setCurrentQuestion(0);
@@ -100,6 +106,7 @@ export default function Home() {
               currentIndex={currentQuestion}
               totalQuestions={questions.length}
               onSelect={handleSelect}
+              onBack={handleBack}
               isVisible={!transitioning}
             />
           </div>
