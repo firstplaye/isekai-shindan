@@ -46,20 +46,26 @@ export default function Home() {
         setScores(finalScores);
 
         // Firebase はバックグラウンド保存
-        getNextUserId().then((userId) => {
-          addDoc(collection(db, "assessment_results"), {
-            userId,
-            answers: newAnswers,
-            scores: finalScores,
-            completedAt: serverTimestamp(),
-            userAgent: navigator.userAgent,
-          }).then(() => {
-            console.log("✅ Firebase 保存成功:", userId);
-          }).catch((err) => {
+        getNextUserId()
+          .then((userId) =>
+            addDoc(collection(db, "assessment_results"), {
+              userId,
+              answers: newAnswers,
+              scores: finalScores,
+              completedAt: serverTimestamp(),
+              userAgent: navigator.userAgent,
+            })
+          )
+          .then(() => {
+            console.log("✅ Firebase 保存成功");
+          })
+          .catch((err: Error) => {
             console.error("❌ Firebase 保存失敗:", err);
-            alert("データ保存に失敗しました。\nFirebase のセキュリティルールを確認してください。\n\n" + err.message);
+            alert(
+              "データベース保存に失敗しました。\nFirebase ルールを確認してください。\n\n" +
+                err.message
+            );
           });
-        });
 
         setPhase("result");
       }
