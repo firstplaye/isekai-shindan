@@ -45,7 +45,7 @@ export default function Home() {
         const finalScores = computeScores(newAnswers);
         setScores(finalScores);
 
-        // Firebase はバックグラウンド保存（結果表示をブロックしない）
+        // Firebase はバックグラウンド保存
         getNextUserId().then((userId) => {
           addDoc(collection(db, "assessment_results"), {
             userId,
@@ -53,8 +53,11 @@ export default function Home() {
             scores: finalScores,
             completedAt: serverTimestamp(),
             userAgent: navigator.userAgent,
+          }).then(() => {
+            console.log("✅ Firebase 保存成功:", userId);
           }).catch((err) => {
-            console.warn("Firebase への保存に失敗しました:", err);
+            console.error("❌ Firebase 保存失敗:", err);
+            alert("データ保存に失敗しました。\nFirebase のセキュリティルールを確認してください。\n\n" + err.message);
           });
         });
 
